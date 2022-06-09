@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import SiteUser
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 
 class UserLoginForm(AuthenticationForm):
@@ -10,7 +10,7 @@ class UserLoginForm(AuthenticationForm):
                                required=False)
 
 
-class UserRegisterForm(forms.ModelForm):
+class UserRegisterForm(UserCreationForm):
     username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
@@ -22,4 +22,3 @@ class UserRegisterForm(forms.ModelForm):
     class Meta:
         model = SiteUser
         fields = ['username', 'email', 'invite_code']
-

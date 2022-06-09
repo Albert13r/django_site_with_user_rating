@@ -10,6 +10,7 @@ def user_login(request):
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
+            # проверить is_avtive
             login(request, user)
             return redirect('user_profile')
     else:
