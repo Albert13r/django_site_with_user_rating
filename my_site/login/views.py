@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserLoginForm
 from .models import SiteUser
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 def user_login(request):
@@ -12,7 +12,7 @@ def user_login(request):
             user = form.get_user()
             # проверить is_avtive
             login(request, user)
-            return redirect('user_profile')
+            return redirect('top_10')
     else:
         form = UserLoginForm()
     return render(request, 'login/login.html', {"form": form})
@@ -56,3 +56,4 @@ class TopUsers(ListView):
     model = SiteUser
     paginate_by = 10
     ordering = ['-points']
+
