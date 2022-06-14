@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 
 from .models import SiteUser
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -16,7 +17,7 @@ class UserRegisterForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Password confirmation',
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    invite_code = forms.CharField(label='Invite code',
+    invite_code = forms.CharField(label='Invite code', error_messages={'required': 'please input an invite code'},
                                   widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
 
     class Meta:
