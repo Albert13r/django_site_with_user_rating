@@ -1,0 +1,67 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section style="background-color: #eee;">
+    <a href="{% url 'logout' %}">
+        <button type="button" class="btn btn-light">Logout</button>
+    </a>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                </div>
+            </div>
+            <div class="container-fluid well span6">
+                <div class="row-fluid">
+                    <div class="span2">
+                        <img src="https://www.svgrepo.com/show/122119/user-image-with-black-background.svg"
+                             class="img-circle">
+                    </div>
+                    <div class="span8">
+                        <h2>{{ user.username }}</h2>
+                        <h6>Email: {{ user.email }}</h6>
+                        {% if user.personal_invite_code %}
+                        <h6>My invite code: {{user.personal_invite_code}}</h6>
+                        {% else %}
+                        <a href="{% url 'generate_invite_code' %}">
+                            <button type="button" class="btn btn-light">Generate code</button>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Date joined</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% block top %}
+                        {% for item in invited_users%}
+                        <tr>
+                            <td>{{ item.username }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.date_joined }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endblock %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"
+      id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
