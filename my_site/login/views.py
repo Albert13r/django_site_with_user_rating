@@ -1,5 +1,6 @@
 import random
 import string
+
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserLoginForm
@@ -34,8 +35,12 @@ def register(request):
                 points_left = SiteUser.objects.filter(invite_code=invite_code).count()
                 inviter = SiteUser.objects.get(personal_invite_code=invite_code)
                 calculate(inviter, points_left)
+                return render(request, "login/register.html", {"form": form})
+
             form.save()
             return redirect('login')
+
+        return render(request, "login/register.html", {"form": form})
     else:
         form = UserRegisterForm()
         users_count = SiteUser.objects.count()
