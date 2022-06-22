@@ -124,8 +124,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = "smtp.ukr.net"
-EMAIL_PORT = 465
+EMAIL_PORT = 2525
 EMAIL_USER = "zeynalov_albert@ukr.net"
-EMAIL_HOST_PASSWORD = os.environ.get("13021996az")
+EMAIL_HOST_PASSWORD = "7AJ59z1nrR95plLw"
+EMAIL_HOST_USER = "zeynalov_albert@ukr.net"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True

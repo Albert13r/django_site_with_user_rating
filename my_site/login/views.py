@@ -1,8 +1,12 @@
 import random
 import string
 
+from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.core.mail import EmailMessage, send_mail
 from django.shortcuts import render, redirect
+from django.views import View
+
 from .forms import UserRegisterForm, UserLoginForm
 from .models import SiteUser
 from django.views.generic import ListView
@@ -38,9 +42,17 @@ def register(request):
                 return render(request, "login/register.html", {"form": form})
 
             form.save()
-            return redirect('login')
+            send_mail(
+                'Activate account',
+                'Click on this link to activate your account.',
+                'zeynalov_albert@ukr.net',
+                [form['email'].value()],
+                fail_silently=False
+            )
+            messages.success(request, 'Account successes created')
+            return render(request, "login/register.html", {"form": form})
 
-        return render(request, "login/register.html", {"form": form})
+        return redirect('login')
     else:
         form = UserRegisterForm()
         users_count = SiteUser.objects.count()
@@ -83,3 +95,4 @@ def generate_invite_code(request):
         user.personal_invite_code = personal_code
         user.save()
     return redirect('home')
+
