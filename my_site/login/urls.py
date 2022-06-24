@@ -8,4 +8,5 @@ urlpatterns = [
     path('top_10/', TopUsers.as_view(), name='top_10'),
     path('home/', home, name='home'),
     path('generate_invite_code/', generate_invite_code, name='generate_invite_code'),
+    path('activate/<uidb64>/<token>', VerificationView.as_view(), name='activate'),
 ]

@@ -22,6 +22,9 @@
                     <div class="span8">
                         <h2>{{ user.username }}</h2>
                         <h6>Email: {{ user.email }}</h6>
+                        {% if inviter %}
+                        <h6>Invited by: {{ inviter }}</h6>
+                        {% endif %}
                         {% if user.personal_invite_code %}
                         <h6>My invite code: {{user.personal_invite_code}}</h6>
                         {% else %}
