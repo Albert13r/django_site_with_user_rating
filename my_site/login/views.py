@@ -5,11 +5,9 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-
 from .forms import UserRegisterForm, UserLoginForm
 from .models import SiteUser
 from django.views.generic import ListView
-
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
@@ -37,12 +35,6 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            invite_code = form['invite_code'].value()
-            if invite_code:
-                points_left = SiteUser.objects.filter(invite_code=invite_code).count() + 1
-                inviter = SiteUser.objects.get(personal_invite_code=invite_code)
-                calculate(inviter, points_left)
-
             uidb64 = urlsafe_base64_encode(force_bytes(SiteUser.pk))
             domain = get_current_site(request).domain
             token = token_generator.make_token(user=SiteUser)
@@ -57,7 +49,7 @@ def register(request):
             )
 
             user = form.save()
-            # user.is_active = False
+            user.is_active = False
             user.activation_code = uidb64 + token
             user.save()
 
@@ -96,7 +88,7 @@ def home(request):
     else:
         inviter = None
     if user.personal_invite_code:
-        invited_users = SiteUser.objects.filter(invite_code=user.personal_invite_code)
+        invited_users = SiteUser.objects.filter(invite_code=user.personal_invite_code, is_active=True)
     else:
         invited_users = []
     return render(request, 'login/home.html', {"invited_users": invited_users, "user": user, "inviter": inviter})
@@ -119,15 +111,15 @@ class VerificationView(View):
             user.activation_code = None
             user.save()
 
-            # if user.invite_code:
-            #     points_left = SiteUser.objects.filter(invite_code=user.invite_code).count() + 1
-            #     inviter = SiteUser.objects.get(personal_invite_code=user.invite_code)
-            #     calculate(inviter, points_left)
+            if user.invite_code:
+                points_left = SiteUser.objects.filter(invite_code=user.invite_code, is_active=True).count()
+                inviter = SiteUser.objects.get(personal_invite_code=user.invite_code)
+                calculate(inviter, points_left)
 
             login(request, user)
 
             return redirect('home')
-        except Exception as err:
+        except Exception:
             form = UserLoginForm()
             message = "Your activation code is invalid or expired"
             return render(request, 'login/login.html', {"message": message, "form": form})
