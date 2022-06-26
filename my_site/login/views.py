@@ -24,8 +24,9 @@ def user_login(request):
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
-            return redirect('home')
+            if user.is_active:
+                login(request, user)
+                return redirect('home')
     else:
         form = UserLoginForm()
     return render(request, 'login/login.html', {"form": form})

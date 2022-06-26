@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import rootpath as rootpath
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -123,10 +126,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+load_dotenv(f"{rootpath.detect()}/.env")
+
 EMAIL_HOST = "smtp.ukr.net"
 EMAIL_PORT = 2525
-EMAIL_USER = os.environ.get('USER_EMAIL')
-EMAIL_HOST_PASSWORD = os.environ.get('SMTP_PASSWORD')
-EMAIL_HOST_USER = os.environ.get('USER_EMAIL')
+EMAIL_USER = os.environ.get("USER_EMAIL")
+EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASSWORD")
+EMAIL_HOST_USER = os.environ.get("USER_EMAIL")
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
